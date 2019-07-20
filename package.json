@@ -1,0 +1,27 @@
+{
+  "name": "dile-countdown-time",
+  "version": "1.0.0",
+  "description": "Web component that shows a countdown to a date based on LitElement",
+  "main": "dile-countdown-time.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Polydile/dile-countdown-time.git"
+  },
+  "keywords": [
+    "countdown",
+    "webcomponent",
+    "litelement"
+  ],
+  "author": "iscipar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Polydile/dile-countdown-time/issues"
+  },
+  "homepage": "https://github.com/Polydile/dile-countdown-time#readme",
+  "dependencies": {
+    "lit-element": "^2.2.0"
+  }
+}

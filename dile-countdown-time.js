@@ -63,6 +63,7 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
                 }
                 else {
                     this._countdown(dateMomentObject);
+                    this._countdownInterval(dateMomentObject);
                 }
             }
             else {
@@ -73,25 +74,30 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
     }
 
     _countdown(dateMomentObject) {
+        let duration = moment.duration(dateMomentObject.diff(moment()));
+        if (duration.asMilliseconds() <= 0) {
+            this.resetCountdown();
+            clearInterval(this.countdownInterval);
+            console.log('countdown finished');
+        }
+        else {
+            let days = parseInt(duration.asDays());
+            let hours = parseInt(duration.asHours());
+            hours = hours - days * 24;
+            let minutes = parseInt(duration.asMinutes());
+            minutes = minutes - (days * 24 * 60 + hours * 60);
+            let seconds = parseInt(duration.asSeconds());
+            seconds = seconds - (days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60);
+            this.days = this.lpad(days, -3);
+            this.hours = this.lpad(hours, -2);
+            this.minutes = this.lpad(minutes, -2);
+            this.seconds = this.lpad(seconds, -2);
+        }
+    }
+
+    _countdownInterval(dateMomentObject) {
         this.countdownInterval = setInterval(() => {
-            let duration = moment.duration(dateMomentObject.diff(moment()));
-            if (duration.asMilliseconds() <= 0) {
-                clearInterval(this.countdownInterval);
-                console.log('countdown finished');
-            }
-            else {
-                let days = parseInt(duration.asDays());
-                let hours = parseInt(duration.asHours());
-                hours = hours - days * 24;
-                let minutes = parseInt(duration.asMinutes());
-                minutes = minutes - (days * 24 * 60 + hours * 60);
-                let seconds = parseInt(duration.asSeconds());
-                seconds = seconds - (days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60);
-                this.days = this.lpad(days, -3);
-                this.hours = this.lpad(hours, -2);
-                this.minutes = this.lpad(minutes, -2);
-                this.seconds = this.lpad(seconds, -2);
-            }
+            this._countdown(dateMomentObject);
         }, 1000);
     }
 }

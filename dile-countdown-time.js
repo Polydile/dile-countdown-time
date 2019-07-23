@@ -11,14 +11,14 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
         return css`
             :host {
                 display: block;
-                width: 250px;
+                width: 280px;
             }
 
             .circle {
                 background: var(--dile-countdown-time-circle-color, #212121);
                 border-radius: 50%;
-                height: 50px;
-                width: 50px;
+                height: 60px;
+                width: 60px;
             }
 
             .circle-content {

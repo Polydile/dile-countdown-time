@@ -9,11 +9,25 @@
         body {
             font-family: 'Lucida Sans', sans-serif;
         }
+
+        .custom-countdown {
+            --dile-countdown-time-circle-color: #1b5e20;
+            --dile-countdown-time-number-color: #ffcc80;
+            --dile-countdown-time-word-color: #b71c1c;
+        }
     </style>
 </head>
 <body>
     <h1>dile-countdown-time demo</h1>
-    <dile-countdown-time dateString="31-12-2020 10:00"></dile-countdown-time>
+    <p>
+        <dile-countdown-time dateString="31-12-2020 10:00"></dile-countdown-time>
+    </p>
+    <p>
+        <dile-countdown-time dateString="31-12-2020 10:00" language="es"></dile-countdown-time>
+    </p>
+    <p>
+        <dile-countdown-time dateString="31-12-2020 10:00" class="custom-countdown" language="es"></dile-countdown-time>
+    </p>
     <script src="../dile-countdown-time.js" type="module"></script>
 </body>
 </html>

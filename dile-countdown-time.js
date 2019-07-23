@@ -2,12 +2,52 @@ import { LitElement, html, css } from 'lit-element';
 import moment from 'moment';
 import { DileCountdownTimeMixin } from './dile-countdown-time-mixin';
 
+const WORDS_EN = ['DAYS', 'HOURS', 'MINUTES', 'SECONDS'];
+const WORDS_ES = ['DÍAS', 'HORAS', 'MINUTOS', 'SEGUNDOS'];
+
 export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
 
     static get styles() {
         return css`
             :host {
                 display: block;
+                width: 250px;
+            }
+
+            .circle {
+                background: var(--dile-countdown-time-circle-color, #212121);
+                border-radius: 50%;
+                height: 50px;
+                width: 50px;
+            }
+
+            .circle-content {
+                color: var(--dile-countdown-time-number-color, #f5f5f5);
+                float: left;
+                line-height: 1;
+                margin-top: -0.5em;
+                padding-top: 50%;
+                text-align: center;
+                width: 100%;
+            }
+
+            .countdown {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .countdown-column {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 10px;
+            }
+
+            .countdown-word {
+                font-size: 10px;
+                color: var(--dile-countdown-time-word-color, #212121);
+                margin-bottom: 10px;
             }
         `;
     }
@@ -28,12 +68,20 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
             },
             seconds: {
                 type: String
+            },
+            language: {
+                type: String
+            },
+            words: {
+                type: Array
             }
         };
     }
 
     constructor() {
         super();
+        this.language = 'en';
+        this.words = WORDS_EN;
     }
 
     disconnectedCallback() {
@@ -43,11 +91,31 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
 
     render() {
         return html`
-            <div>
-                <span>${this.days}</span>
-                <span>${this.hours}</span>
-                <span>${this.minutes}</span>
-                <span>${this.seconds}</span>
+            <div class="countdown">
+                <div class="countdown-column">
+                    <div class="countdown-word">${this.words[0]}</div>
+                    <div class="circle">
+                        <div class="circle-content">${this.days}</div>
+                    </div>
+                </div>
+                <div class="countdown-column">
+                    <div class="countdown-word">${this.words[1]}</div>
+                    <div class="circle">
+                        <div class="circle-content">${this.hours}</div>
+                    </div>
+                </div>
+                <div class="countdown-column">
+                    <div class="countdown-word">${this.words[2]}</div>
+                    <div class="circle">
+                        <div class="circle-content">${this.minutes}</div>
+                    </div>
+                </div>
+                <div class="countdown-column">
+                    <div class="countdown-word">${this.words[3]}</div>
+                    <div class="circle">
+                        <div class="circle-content">${this.seconds}</div>
+                    </div>
+                </div>
             </div>
         `;
     }
@@ -69,6 +137,14 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
             else {
                 this.resetCountdown();
                 console.log('invalid dateString format (valid format is "DD-MM-YYYY HH:mm")');
+            }
+        }
+        if (changedProperties.has('language')) {
+            if (this.language == 'es') {
+                this.words = WORDS_ES;
+            }
+            else {
+                this.words = WORDS_EN;
             }
         }
     }

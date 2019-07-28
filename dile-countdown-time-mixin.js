@@ -3,9 +3,5 @@ export const DileCountdownTimeMixin = (Superclass) => {
         lpad(input, length) {
             return ('0' + input).slice(length);
         }
-
-        resetCountdown() {
-            this.days = this.hours = this.minutes = this.seconds = '00';
-        }
     }
 }

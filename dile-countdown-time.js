@@ -15,13 +15,19 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
             }
 
             .circle {
-                background: var(--dile-countdown-time-circle-color, #212121);
+                background: var(--dile-countdown-time-shape-color, #212121);
                 border-radius: 50%;
                 height: 60px;
                 width: 60px;
             }
 
-            .circle-content {
+            .square {
+                background: var(--dile-countdown-time-shape-color, #212121);
+                height: 60px;
+                width: 60px;
+            }
+
+            .shape-content {
                 color: var(--dile-countdown-time-number-color, #f5f5f5);
                 float: left;
                 line-height: 1;
@@ -74,6 +80,9 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
             },
             words: {
                 type: Array
+            },
+            shape: {
+                type: String
             }
         };
     }
@@ -82,6 +91,7 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
         super();
         this.language = 'en';
         this.words = WORDS_EN;
+        this.shape = 'square';
     }
 
     disconnectedCallback() {
@@ -94,26 +104,26 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
             <div class="countdown">
                 <div class="countdown-column">
                     <div class="countdown-word">${this.words[0]}</div>
-                    <div class="circle">
-                        <div class="circle-content">${this.days}</div>
+                    <div class="${this.shape}">
+                        <div class="shape-content">${this.days}</div>
                     </div>
                 </div>
                 <div class="countdown-column">
                     <div class="countdown-word">${this.words[1]}</div>
-                    <div class="circle">
-                        <div class="circle-content">${this.hours}</div>
+                    <div class="${this.shape}">
+                        <div class="shape-content">${this.hours}</div>
                     </div>
                 </div>
                 <div class="countdown-column">
                     <div class="countdown-word">${this.words[2]}</div>
-                    <div class="circle">
-                        <div class="circle-content">${this.minutes}</div>
+                    <div class="${this.shape}">
+                        <div class="shape-content">${this.minutes}</div>
                     </div>
                 </div>
                 <div class="countdown-column">
                     <div class="countdown-word">${this.words[3]}</div>
-                    <div class="circle">
-                        <div class="circle-content">${this.seconds}</div>
+                    <div class="${this.shape}">
+                        <div class="shape-content">${this.seconds}</div>
                     </div>
                 </div>
             </div>
@@ -126,7 +136,7 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
             if (moment(this.dateString, 'DD-MM-YYYY HH:mm').isValid()) {
                 let dateMomentObject = moment(this.dateString, 'DD-MM-YYYY HH:mm');
                 if (dateMomentObject < moment()) {
-                    this.resetCountdown();
+                    this._resetCountdown();
                     console.log('dateString value can not be earlier than the system date');
                 }
                 else {
@@ -135,7 +145,7 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
                 }
             }
             else {
-                this.resetCountdown();
+                this._resetCountdown();
                 console.log('invalid dateString format (valid format is "DD-MM-YYYY HH:mm")');
             }
         }
@@ -147,12 +157,17 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
                 this.words = WORDS_EN;
             }
         }
+        if (changedProperties.has('shape')) {
+            if (this.shape != 'circle' && this.shape != 'square') {
+                this.shape = 'square';
+            }
+        }
     }
 
     _countdown(dateMomentObject) {
         let duration = moment.duration(dateMomentObject.diff(moment()));
         if (duration.asMilliseconds() <= 0) {
-            this.resetCountdown();
+            this._resetCountdown();
             clearInterval(this.countdownInterval);
             console.log('countdown finished');
         }
@@ -175,6 +190,10 @@ export class DileCountdownTime extends DileCountdownTimeMixin(LitElement) {
         this.countdownInterval = setInterval(() => {
             this._countdown(dateMomentObject);
         }, 1000);
+    }
+
+    _resetCountdown() {
+        this.days = this.hours = this.minutes = this.seconds = '00';
     }
 }
 

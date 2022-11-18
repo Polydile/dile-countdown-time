@@ -29,6 +29,6 @@
     "moment": "^2.24.0"
   },
   "devDependencies": {
-    "@open-wc/demoing-storybook": "^0.3.0"
+    "@open-wc/demoing-storybook": "^2.4.7"
   }
 }
